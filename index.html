@@ -27,13 +27,13 @@
 
 
 
-        <a href="https://github.com/turkey1024/turkey1024.github.io/" style="color: red;">访问娘子关火力发电站</a>
+        <a href="https://github.com/turkey1024/turkey1024.github.io/" style="color: red;">访问娘子关发电厂</a>
 
 
     </footer>
 
     <script>
-        // 从books.json加载数据
+        // 懒得写了，反正也看不懂
         async function loadBooks() {
             try {
                 const response = await fetch('books.json');
@@ -47,7 +47,7 @@
             }
         }
 
-        // 显示电子书列表
+        // 显示电子书
         function displayBooks(booksToDisplay) {
             const bookList = document.getElementById('bookList');
             bookList.innerHTML = '';
@@ -68,7 +68,7 @@
             });
         }
 
-        // 搜索功能
+        // 
         function searchBooks() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             if (!window.bookData) return;
@@ -79,7 +79,7 @@
             displayBooks(filteredBooks);
         }
 
-        // 页面加载时初始化
+        //初始化
         window.onload = async function() {
             window.bookData = await loadBooks();
             displayBooks(window.bookData);
