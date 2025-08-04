@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1379下载站</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo"></div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="搜索书名..." onkeyup="searchBooks()">
+            <button onclick="searchBooks()">搜索</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h2>1379下载站</h2>
+        
+        <div class="book-list" id="bookList">
+        </div>
+    </div>
+    
+    <footer>
+
+
+
+        <a href="https://github.com/turkey1024/turkey1024.github.io/" style="color: green;">Github项目</a>
+
+
+    </footer>
+
+    <script>
+        async function loadBooks() {
+            try {
+                const response = await fetch('books.json');
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('加载书籍数据失败:', error);
+                return [];
+            }
+        }
+
+        function displayBooks(booksToDisplay) {
+            const bookList = document.getElementById('bookList');
+            bookList.innerHTML = '';
+
+            if (booksToDisplay.length === 0) {
+                bookList.innerHTML = '<div class="no-results">没有找到匹配的电子书</div>';
+                return;
+            }
+
+            booksToDisplay.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                bookCard.innerHTML = `
+                    <div class="book-title">${book.title}</div>
+                    <a href="${book.path}" class="download-btn" download="${book.filename}">下载电子书</a>
+                `;
+                bookList.appendChild(bookCard);
+            });
+        }
+
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!window.bookData) return;
+            
+            const filteredBooks = window.bookData.filter(book => 
+                book.title.toLowerCase().includes(searchTerm)
+            );
+            displayBooks(filteredBooks);
+        }
+
+        window.onload = async function() {
+            window.bookData = await loadBooks();
+            displayBooks(window.bookData);
+        };
+
+
+
+
+    </script>
+</body>
+</html>
+
